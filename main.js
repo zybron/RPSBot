@@ -23,7 +23,7 @@ client.on('message', message => {
   if (message.content === '!rps') {
     var resp = opt[Math.floor(Math.random()*opt.length)];
     var gene = moji[opt.indexOf(resp)];
-    message.reply('threw ' + resp + '! ' + gene);
+    message.reply('you threw ' + resp + '! ' + gene);
   }
 });
 // Log our bot in
