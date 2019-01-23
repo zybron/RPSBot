@@ -14,8 +14,10 @@ RUN cd /tmp && npm install --loglevel=warn \
   && mkdir -p $APP \
   && mv /tmp/node_modules $APP
 
+RUN mkdir -p $APP/data
+
 COPY main.js $APP/main.js
-COPY config.json $APP/config.json
+COPY config.json $APP/data/config.json
 
 WORKDIR $APP
 
