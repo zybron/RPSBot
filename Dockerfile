@@ -8,16 +8,12 @@ ENV APP /usr/src/app
 
 RUN npm install pm2 -g
 
-COPY package.json /tmp/package.json
-
-RUN cd /tmp && npm install --loglevel=warn \
-  && mkdir -p $APP \
-  && mv /tmp/node_modules $APP
-
-RUN mkdir -p $APP/data
-
+RUN mkdir -p $APP
 COPY main.js $APP/main.js
 COPY config.json $APP/data/config.json
+COPY package.json $APP/package.json
+
+RUN npm install --loglevel=warn
 
 WORKDIR $APP
 
