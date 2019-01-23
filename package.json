@@ -1,0 +1,31 @@
+{
+  "name": "rpsbot",
+  "version": "1.0",
+  "main": "main.js",
+  "author": "zybron <zybron@gmail.com> (https://github.com/zybron)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zybron/RPSBot"
+  },
+  "bugs": {
+    "url": "https://github.com/zybron/RPSBot/issues"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "commands"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "prestart": "yarn install",
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "bufferutil": "^3.0.3",
+    "node-opus": "^0.2.7",
+    "opusscript": "^0.0.6",
+    "sodium": "^2.0.3",
+    "libsodium-wrappers": "^0.7.3"
+  }
+}

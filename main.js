@@ -19,15 +19,12 @@ var moji = ['\:scissors:', '\:full_moon_with_face:', '\:newspaper:'];
 
 client.on('message', message => {
   if (message.channel.type === "dm") return; 
-  function rps() {
-    if (message.content === '!rps') {
-      var resp = opt[Math.floor(Math.random()*opt.length)];
-      var gene = moji[opt.indexOf(resp)];
-      message.reply(message.author.username + ' threw ' + resp + '! ' + gene);
-    }
-  }
-
   if (!message.content.startsWith(config.prefix)) return; // Ignore messages that don't start with the prefix
+  if (message.content === '!rps') {
+    var resp = opt[Math.floor(Math.random()*opt.length)];
+    var gene = moji[opt.indexOf(resp)];
+    message.reply('threw ' + resp + '! ' + gene);
+  }
 });
 // Log our bot in
 client.login(config.token);
