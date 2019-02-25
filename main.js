@@ -24,7 +24,7 @@ client.on('message', message => {
     var first_throw = opt[Math.floor(Math.random()*opt.length)];
     var first_moji = moji[opt.indexOf(first_throw)];
     var second_throw = opt[Math.floor(Math.random()*opt.length)];
-    var second_moji = moji[opt.indexOf[second_throw]];
+    var second_moji = moji[opt.indexOf(second_throw)];
 
     message.reply('you threw ' + first_throw + '! ' + first_moji);
     message.reply('I threw ' + second_throw + '! ' + second_moji);
