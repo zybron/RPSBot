@@ -20,6 +20,9 @@ var moji = ['\:scissors:', '\:full_moon_with_face:', '\:newspaper:'];
 client.on('message', message => {
   // if (message.channel.type === "dm") return; 
   if (!message.content.startsWith(config.prefix)) return; // Ignore messages that don't start with the prefix
+  if (message.content === '!help') {
+    message.reply('Use !rps to throw a challenge. \n Use !rps static to throw a challenge against me.');
+  }
   if (message.content === '!rps static') {
     var first_throw = opt[Math.floor(Math.random()*opt.length)];
     var first_moji = moji[opt.indexOf(first_throw)];
