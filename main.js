@@ -21,9 +21,9 @@ client.on('message', message => {
   // if (message.channel.type === "dm") return; 
   if (!message.content.startsWith(config.prefix)) return; // Ignore messages that don't start with the prefix
   if (message.content === config.prefix + 'help') {
-    message.author.send('Use ' + config.prefix + 'rps to throw a challenge. \n' + 
-      'Use ' + config.prefix + 'rps static to throw a challenge against me and I will show you the results. \n' + 
-      'Finally,' + config.prefix + 'help will show you this message.');
+    message.author.send('Use `' + config.prefix + 'rps` to throw a challenge. \n' + 
+      'Use `' + config.prefix + 'rps` static to throw a challenge against me and I will show you the results. \n' + 
+      'Finally, `' + config.prefix + 'help` will show you this message.');
   }
   if (message.content === config.prefix + 'rps static') {
     var first_throw = opt[Math.floor(Math.random()*opt.length)];
