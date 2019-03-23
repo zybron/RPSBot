@@ -19,18 +19,18 @@ var moji = ['\:scissors:', '\:full_moon_with_face:', '\:newspaper:'];
 
 client.on('message', message => {
   // if (message.channel.type === "dm") return; 
-  if (!message.content.startsWith(config.prefix)) return; // Ignore messages that don't start with the prefix
-  if (message.content.toLocaleLowerCase() === config.prefix + 'help' || 
+  if (message.channel.type !== "dm" && !message.content.startsWith(config.prefix)) return; // Ignore messages that don't start with the prefix
+  if (message.content.toLocaleLowerCase() === config.prefix + 'help' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'help')) {
-    sendPM(message, 'Use `' + config.prefix + 'rps` to throw a challenge. \n' + 
-      'Use `' + config.prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' + 
+    sendPM(message, 'Use `' + config.prefix + 'rps` to throw a challenge. \n' +
+      'Use `' + config.prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
       'Finally, `' + config.prefix + 'help` will show you this message.');
-  }
-  if (message.content.toLocaleLowerCase() === config.prefix + 'rps static' || 
+
+  } else if (message.content.toLocaleLowerCase() === config.prefix + 'rps static' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'rps static')) {
-    var first_throw = opt[Math.floor(Math.random()*opt.length)];
+    var first_throw = opt[Math.floor(Math.random() * opt.length)];
     var first_moji = moji[opt.indexOf(first_throw)];
-    var second_throw = opt[Math.floor(Math.random()*opt.length)];
+    var second_throw = opt[Math.floor(Math.random() * opt.length)];
     var second_moji = moji[opt.indexOf(second_throw)];
 
     var reply = 'you threw ' + first_throw + '! ' + first_moji + '\n'
@@ -60,17 +60,32 @@ client.on('message', message => {
     }
 
     sendMessage(message, reply);
-  }
-  if (message.content.toLocaleLowerCase() === config.prefix + 'rps' || 
+
+  } else if (message.content.toLocaleLowerCase() === config.prefix + 'rps' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'rps')) {
-    var resp = opt[Math.floor(Math.random()*opt.length)];
+
+    var resp = opt[Math.floor(Math.random() * opt.length)];
     var gene = moji[opt.indexOf(resp)];
     sendMessage(message, 'you threw ' + resp + '! ' + gene);
+
+  } else {
+    if (message.author.username !== 'RPSBot') { // don't try to respond to myself
+      if (message.channel.type === "dm") {
+        sendPM(message, 'Sorry, I don\'t understand that command.\nUse `' + config.prefix + 'rps` to throw a challenge. \n' +
+          'Use `' + config.prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
+          'Finally, `' + config.prefix + 'help` will show you this message.');
+      } else {
+        sendMessage(message, 'Sorry, I don\'t understand that command. I sent you a PM of available commands.');
+        sendPM(message, 'Use `' + config.prefix + 'rps` to throw a challenge. \n' +
+          'Use `' + config.prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
+          'Finally, `' + config.prefix + 'help` will show you this message.');
+      }
+    }
   }
 });
 
 // Log our bot in
-client.login(config.token).catch((reason) => { 
+client.login(config.token).catch((reason) => {
   console.log(reason);
 });
 
