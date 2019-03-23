@@ -63,4 +63,6 @@ client.on('message', message => {
   }
 });
 // Log our bot in
-client.login(config.token);
+client.login(config.token).catch((reason) => { 
+  console.log(reason);
+});
