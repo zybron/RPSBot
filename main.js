@@ -24,7 +24,7 @@ client.on('message', message => {
     message.author.send('Use `' + config.prefix + 'rps` to throw a challenge. \n' + 
       'Use `' + config.prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' + 
       'Finally, `' + config.prefix + 'help` will show you this message.')
-      .then(value => console.log('sent help to ' + message.author))
+      .then(value => console.log('sent help to ' + message.author.username))
       .catch(error => console.log(error));
   }
   if (message.content.toLocaleLowerCase() === config.prefix + 'rps static') {
@@ -74,6 +74,6 @@ client.login(config.token).catch((reason) => {
 
 function sendMessage(message, text) {
   message.reply(text)
-    .then(value => console.log('sent ' + text + ' to ' + message.author))
+    .then(value => console.log('sent ' + text + ' to ' + message.author.username))
     .catch(error => console.log(error));
 }
