@@ -20,47 +20,49 @@ var moji = ['\:scissors:', '\:full_moon_with_face:', '\:newspaper:'];
 client.on('message', message => {
   // if (message.channel.type === "dm") return; 
   if (!message.content.startsWith(config.prefix)) return; // Ignore messages that don't start with the prefix
-  if (message.content.toLocaleLowerCase() === config.prefix + 'help') {
-    message.author.send('Use `' + config.prefix + 'rps` to throw a challenge. \n' + 
+  if (message.content.toLocaleLowerCase() === config.prefix + 'help' || 
+    (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'help')) {
+    sendPM(message, 'Use `' + config.prefix + 'rps` to throw a challenge. \n' + 
       'Use `' + config.prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' + 
-      'Finally, `' + config.prefix + 'help` will show you this message.')
-      .then(value => console.log('sent help to ' + message.author.username))
-      .catch(error => console.log(error));
+      'Finally, `' + config.prefix + 'help` will show you this message.');
   }
-  if (message.content.toLocaleLowerCase() === config.prefix + 'rps static') {
+  if (message.content.toLocaleLowerCase() === config.prefix + 'rps static' || 
+    (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'rps static')) {
     var first_throw = opt[Math.floor(Math.random()*opt.length)];
     var first_moji = moji[opt.indexOf(first_throw)];
     var second_throw = opt[Math.floor(Math.random()*opt.length)];
     var second_moji = moji[opt.indexOf(second_throw)];
 
-    sendMessage(message, 'you threw ' + first_throw + '! ' + first_moji);
-
-    sendMessage(message, 'I threw ' + second_throw + '! ' + second_moji);
+    var reply = 'you threw ' + first_throw + '! ' + first_moji + '\n'
+      + 'I threw ' + second_throw + '! ' + second_moji + '\n';
 
     if (opt.indexOf(first_throw) === opt.indexOf(second_throw)) {
       // tie
-      sendMessage(message, 'we tied!');
+      reply = reply + 'We tied!';
     } else if (first_throw === 'scissors') {
       if (second_throw === 'rock') {
-        sendMessage(message, 'I won!');
+        reply = reply + 'I won!';
       } else {
-        sendMessage(message, 'you won!');
+        reply = reply + 'You won!';
       }
     } else if (first_throw === 'rock') {
       if (second_throw === 'paper') {
-        sendMessage(message, 'I won!');
+        reply = reply + 'I won!';
       } else {
-        sendMessage(message, 'you won!');
+        reply = reply + 'You won!';
       }
     } else if (first_throw === 'paper') {
       if (second_throw === 'scissors') {
-        sendMessage(message, 'I won!');
+        reply = reply + 'I won!';
       } else {
-        sendMessage(message, 'you won!');
+        reply = reply + 'You won!';
       }
     }
+
+    sendMessage(message, reply);
   }
-  if (message.content.toLocaleLowerCase() === config.prefix + 'rps') {
+  if (message.content.toLocaleLowerCase() === config.prefix + 'rps' || 
+    (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'rps')) {
     var resp = opt[Math.floor(Math.random()*opt.length)];
     var gene = moji[opt.indexOf(resp)];
     sendMessage(message, 'you threw ' + resp + '! ' + gene);
@@ -73,7 +75,21 @@ client.login(config.token).catch((reason) => {
 });
 
 function sendMessage(message, text) {
+  var date = new Date();
+  var d = date.toDateString();
+  var t = date.toLocaleTimeString();
+
   message.reply(text)
-    .then(value => console.log('sent ' + text + ' to ' + message.author.username))
+    .then(value => console.log('[' + d + ' ' + t + ']: sent ' + text + ' to ' + message.author.username))
     .catch(error => console.log(error));
-}
+};
+
+function sendPM(message, text) {
+  var date = new Date();
+  var d = date.toDateString();
+  var t = date.toLocaleTimeString();
+
+  message.author.send(text)
+    .then(value => console.log('[' + d + ' ' + t + ']: sent ' + text + ' to ' + message.author.username))
+    .catch(error => console.log(error));
+};
