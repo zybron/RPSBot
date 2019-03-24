@@ -59,14 +59,24 @@ client.on('message', message => {
       }
     }
 
-    sendMessage(message, reply);
+    if (message.channel.type === 'dm') {
+      sendPM(message, reply);
+    } else {
+      sendMessage(message, reply);
+    }
+    
 
   } else if (message.content.toLocaleLowerCase() === config.prefix + 'rps' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'rps')) {
 
     var resp = opt[Math.floor(Math.random() * opt.length)];
     var gene = moji[opt.indexOf(resp)];
-    sendMessage(message, 'you threw ' + resp + '! ' + gene);
+    if (message.channel.type === 'dm') {
+      sendPM(message, 'you threw ' + resp + '! ' + gene);
+    } else {
+      sendMessage(message, 'you threw ' + resp + '! ' + gene);
+    }
+    
 
   } else {
     if (message.author.username !== 'RPSBot') { // don't try to respond to myself
@@ -95,7 +105,9 @@ function sendMessage(message, text) {
   var t = date.toLocaleTimeString();
 
   message.reply(text)
-    .then(value => console.log('[' + d + ' ' + t + ']: sent ' + text + ' to ' + message.author.username))
+    .then(value => console.log('[' + d + ' ' + t + '](' + 
+      ((message.guild && message.guild.name) ? message.guild.name : 'No Server') + ':' + 
+      ((message.channel && message.channel.name) ? message.channel.name : 'No Channel') + '): sent ' + text + ' to ' + message.author.username))
     .catch(error => console.log(error));
 };
 
@@ -105,6 +117,8 @@ function sendPM(message, text) {
   var t = date.toLocaleTimeString();
 
   message.author.send(text)
-    .then(value => console.log('[' + d + ' ' + t + ']: sent ' + text + ' to ' + message.author.username))
+    .then(value => console.log('[' + d + ' ' + t + '](' + 
+    ((message.guild && message.guild.name) ? message.guild.name : 'No Server') + ':' + 
+    ((message.channel && message.channel.name) ? message.channel.name : 'No Channel') + '): sent ' + text + ' to ' + message.author.username))
     .catch(error => console.log(error));
 };
