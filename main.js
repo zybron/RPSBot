@@ -11,7 +11,7 @@ const config = require("./data/config.json");
 // The ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted
 client.on('ready', () => {
-  console.log('I am ready!');
+  logMessage('I am ready!');
 });
 var opt = ['scissors', 'rock', 'paper'];
 var moji = ['\:scissors:', '\:full_moon_with_face:', '\:newspaper:'];
@@ -96,29 +96,34 @@ client.on('message', message => {
 
 // Log our bot in
 client.login(config.token).catch((reason) => {
-  console.log(reason);
+  console.error(dateString() + reason);
+  return;
 });
 
 function sendMessage(message, text) {
-  var date = new Date();
-  var d = date.toDateString();
-  var t = date.toLocaleTimeString();
-
   message.reply(text)
-    .then(value => console.log('[' + d + ' ' + t + '](' + 
+    .then(value => logMessage('(' + 
       ((message.guild && message.guild.name) ? message.guild.name : 'No Server') + ':' + 
       ((message.channel && message.channel.name) ? message.channel.name : 'No Channel') + '): sent ' + text + ' to ' + message.author.username))
-    .catch(error => console.log(error));
+    .catch(error => console.error(dateString() + error));
 };
 
 function sendPM(message, text) {
+  message.author.send(text)
+    .then(value => logMessage('(' + 
+    ((message.guild && message.guild.name) ? message.guild.name : 'No Server') + ':' + 
+    ((message.channel && message.channel.name) ? message.channel.name : 'No Channel') + '): sent ' + text + ' to ' + message.author.username))
+    .catch(error => console.error(dateString() + error));
+};
+
+function logMessage(message) {
+  console.log(dateString() + message);
+};
+
+function dateString() {
   var date = new Date();
   var d = date.toDateString();
   var t = date.toLocaleTimeString();
 
-  message.author.send(text)
-    .then(value => console.log('[' + d + ' ' + t + '](' + 
-    ((message.guild && message.guild.name) ? message.guild.name : 'No Server') + ':' + 
-    ((message.channel && message.channel.name) ? message.channel.name : 'No Channel') + '): sent ' + text + ' to ' + message.author.username))
-    .catch(error => console.log(error));
+  return '[' + d + ' ' + t + '] ';
 };
