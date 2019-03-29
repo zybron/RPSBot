@@ -8,10 +8,27 @@ const config = require("./data/config.json");
 
 // The token of your bot - https://discordapp.com/developers/applications/me
 
+var inviteLink = '';
+
 // The ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted
 client.on('ready', () => {
   logMessage('I am ready!');
+  logMessage(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
+  client.generateInvite(['SEND_MESSAGES', 
+    'SEND_TTS_MESSAGES', 
+    'MANAGE_MESSAGES',
+    'EMBED_LINKS',
+    'ATTACH_FILES',
+    'READ_MESSAGE_HISTORY',
+    'MENTION_EVERYONE',
+    'USE_EXTERNAL_EMOJIS',
+    'ADD_REACTIONS',
+    'VIEW_CHANNEL'])
+	.then(link => {
+		logMessage(`Generated bot invite link: ${link}`);
+		inviteLink = link;
+	});
 });
 var opt = ['scissors', 'rock', 'paper'];
 var moji = ['\:scissors:', '\:full_moon_with_face:', '\:newspaper:'];
@@ -24,7 +41,8 @@ client.on('message', message => {
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'help')) {
     sendPM(message, 'Use `' + config.prefix + 'rps` to throw a challenge. \n' +
       'Use `' + config.prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
-      'Finally, `' + config.prefix + 'help` will show you this message.');
+      'Finally, `' + config.prefix + 'help` will show you this message.\n' + 
+      'If you would like to invite me to your server, use this link: ' + inviteLink);
 
   } else if (message.content.toLocaleLowerCase() === config.prefix + 'rps static' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'rps static')) {
