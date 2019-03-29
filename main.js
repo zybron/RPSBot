@@ -94,11 +94,21 @@ client.on('message', message => {
   }
 });
 
-// Log our bot in
-client.login(config.token).catch((reason) => {
-  console.error(dateString() + reason);
-  return;
+client.on("disconnect", function(event){
+  logMessage('Connection to discord closed');
+  logMessage('Attempting to reconnect.');
+  login();
 });
+
+// Log our bot in
+login();
+
+function login() {
+  client.login(config.token).catch((reason) => {
+    console.error(dateString() + reason);
+    return;
+  });
+}
 
 function sendMessage(message, text) {
   message.reply(text)
