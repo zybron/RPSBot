@@ -100,6 +100,12 @@ client.on("disconnect", function(event){
   login();
 });
 
+client.on("error", function(error){
+  logMessage(`client's WebSocket encountered a connection error: ${error}`);
+  logMessage('Attempting to reconnect.');
+  login();
+});
+
 // Log our bot in
 login();
 
