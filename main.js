@@ -32,7 +32,8 @@ client.on('ready', () => {
 	.then(link => {
 		logMessage(`Generated bot invite link: ${link}`);
 		inviteLink = link;
-	});
+  });
+  client.user.setActivity(`on ${client.guilds.size} servers`);
 });
 var opt = ['scissors', 'rock', 'paper'];
 var moji = ['\:scissors:', '\:full_moon_with_face:', '\:newspaper:'];
@@ -127,6 +128,18 @@ client.on("error", function(error){
   logMessage(`client's WebSocket encountered a connection error: ${error}`);
   logMessage('Attempting to reconnect.');
   login();
+});
+
+client.on("guildCreate", guild => {
+  // This event triggers when the bot joins a guild.
+  logMessage(`New server joined: ${guild.name} (id: ${guild.id}). This server has ${guild.memberCount} members!`);
+  client.user.setActivity(`on ${client.guilds.size} servers`);
+});
+
+client.on("guildDelete", guild => {
+  // this event triggers when the bot is removed from a guild.
+  logMessage(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+  client.user.setActivity(`on ${client.guilds.size} servers`);
 });
 
 // Log our bot in
