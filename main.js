@@ -14,7 +14,11 @@ var inviteLink = '';
 // from Discord _after_ ready is emitted
 client.on('ready', () => {
   logMessage('I am ready!');
-  logMessage(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`);
+  logMessage(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} servers.`);
+  logMessage('Sever list:');
+  client.guilds.sort().forEach((guild) => {
+    logMessage(guild.name);
+  });
   client.generateInvite(['SEND_MESSAGES', 
     'SEND_TTS_MESSAGES', 
     'MANAGE_MESSAGES',
@@ -37,6 +41,7 @@ var moji = ['\:scissors:', '\:full_moon_with_face:', '\:newspaper:'];
 client.on('message', message => {
   // if (message.channel.type === "dm") return; 
   if (message.channel.type !== "dm" && !message.content.startsWith(config.prefix)) return; // Ignore messages that don't start with the prefix
+  if (message.author.bot) return; // Ignore messages from bots
   if (message.content.toLocaleLowerCase() === config.prefix + 'help' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'help')) {
     sendPM(message, 'Use `' + config.prefix + 'rps` to throw a challenge. \n' +
