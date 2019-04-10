@@ -3,10 +3,24 @@ const Discord = require('discord.js');
 // Create an instance of a Discord client
 const client = new Discord.Client();
 
+var prefix = '';
+var token = '';
 
-const config = require("./data/config.json");
+// Get settings from environment variables or optional config file
 
-// The token of your bot - https://discordapp.com/developers/applications/me
+if (process.env.PREFIX) {
+  prefix = process.env.PREFIX;
+} else {
+  const config = require("./data/config.json");
+  prefix = config.prefix;
+}
+
+if (process.env.TOKEN) {
+  token = process.env.TOKEN;
+} else {
+  const config = require("./data/config.json");
+  token = config.token;
+}
 
 var inviteLink = '';
 
@@ -41,16 +55,16 @@ var moji = ['\:scissors:', '\:full_moon_with_face:', '\:newspaper:'];
 
 client.on('message', message => {
   // if (message.channel.type === "dm") return; 
-  if (message.channel.type !== "dm" && !message.content.startsWith(config.prefix)) return; // Ignore messages that don't start with the prefix
+  if (message.channel.type !== "dm" && !message.content.startsWith(prefix)) return; // Ignore messages that don't start with the prefix
   if (message.author.bot) return; // Ignore messages from bots
-  if (message.content.toLocaleLowerCase() === config.prefix + 'help' ||
+  if (message.content.toLocaleLowerCase() === prefix + 'help' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'help')) {
-    sendPM(message, 'Use `' + config.prefix + 'rps` to throw a challenge. \n' +
-      'Use `' + config.prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
-      'Finally, `' + config.prefix + 'help` will show you this message.\n' + 
+    sendPM(message, 'Use `' + prefix + 'rps` to throw a challenge. \n' +
+      'Use `' + prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
+      'Finally, `' + prefix + 'help` will show you this message.\n' + 
       'If you would like to invite me to your server, use this link: ' + inviteLink);
 
-  } else if (message.content.toLocaleLowerCase() === config.prefix + 'rps static' ||
+  } else if (message.content.toLocaleLowerCase() === prefix + 'rps static' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'rps static')) {
     var first_throw = opt[Math.floor(Math.random() * opt.length)];
     var first_moji = moji[opt.indexOf(first_throw)];
@@ -90,7 +104,7 @@ client.on('message', message => {
     }
     
 
-  } else if (message.content.toLocaleLowerCase() === config.prefix + 'rps' ||
+  } else if (message.content.toLocaleLowerCase() === prefix + 'rps' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'rps')) {
 
     var resp = opt[Math.floor(Math.random() * opt.length)];
@@ -105,14 +119,14 @@ client.on('message', message => {
   } else {
     if (message.author.username !== 'RPSBot') { // don't try to respond to myself
       if (message.channel.type === "dm") {
-        sendPM(message, 'Sorry, I don\'t understand that command.\nUse `' + config.prefix + 'rps` to throw a challenge. \n' +
-          'Use `' + config.prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
-          'Finally, `' + config.prefix + 'help` will show you this message.');
+        sendPM(message, 'Sorry, I don\'t understand that command.\nUse `' + prefix + 'rps` to throw a challenge. \n' +
+          'Use `' + prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
+          'Finally, `' + prefix + 'help` will show you this message.');
       } else {
         sendMessage(message, 'Sorry, I don\'t understand that command. I sent you a PM of available commands.');
-        sendPM(message, 'Use `' + config.prefix + 'rps` to throw a challenge. \n' +
-          'Use `' + config.prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
-          'Finally, `' + config.prefix + 'help` will show you this message.');
+        sendPM(message, 'Use `' + prefix + 'rps` to throw a challenge. \n' +
+          'Use `' + prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
+          'Finally, `' + prefix + 'help` will show you this message.');
       }
     }
   }
@@ -146,7 +160,7 @@ client.on("guildDelete", guild => {
 login();
 
 function login() {
-  client.login(config.token).catch((reason) => {
+  client.login(token).catch((reason) => {
     console.error(dateString() + reason);
     return;
   });
