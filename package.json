@@ -20,7 +20,6 @@
   ],
   "license": "MIT",
   "scripts": {
-    "prestart": "yarn install",
     "start": "node main.js"
   },
   "dependencies": {
