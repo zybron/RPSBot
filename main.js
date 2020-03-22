@@ -26,9 +26,9 @@ var inviteLink = '';
 var donateLink = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8HT56HRQQZ27N&source=url'
 var helpEmbed = {
   "embed": {
-    "description": "Use `!rps` to throw a challenge. \n" + 
-	  "Use `!rps static` to throw a challenge against me and I will show you the results. \n" +
-	  "Use `!help` to show this message.\n\n[Invite](<<inviteLink>>) RPSBot to your own server.\n\n" + 
+    "description": "Use `" + prefix + "rps` to throw a challenge. \n" + 
+	  "Use `" + prefix + "rps static` to throw a challenge against me and I will show you the results. \n" +
+	  "Use `" + prefix + "help` to show this message.\n\n[Invite](<<inviteLink>>) RPSBot to your own server.\n\n" + 
 	  "[Donate](" + donateLink + ") to support RPSBot.",
     "url": "https://github.com/zybron/RPSBot",
     "author": {
@@ -75,10 +75,7 @@ client.on('message', message => {
   if (message.author.bot) return; // Ignore messages from bots
   if (message.content.toLocaleLowerCase() === prefix + 'help' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'help')) {
-    sendPM(message, 'Use `' + prefix + 'rps` to throw a challenge. \n' +
-      'Use `' + prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
-      'Finally, `' + prefix + 'help` will show you this message.\n' + 
-      'If you would like to invite me to your server, use this link: ' + inviteLink + '\n' + donateLink);
+    sendPM(message, helpEmbed);
 
   } else if (message.content.toLocaleLowerCase() === prefix + 'rps static' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'rps static')) {
@@ -140,14 +137,11 @@ client.on('message', message => {
   } else {
     if (message.author.username !== 'RPSBot') { // don't try to respond to myself
       if (message.channel.type === "dm") {
-        sendPM(message, 'Sorry, I don\'t understand that command.\nUse `' + prefix + 'rps` to throw a challenge. \n' +
-          'Use `' + prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
-          'Finally, `' + prefix + 'help` will show you this message.');
+        sendPM(message, 'Sorry, I don\'t understand that command.');
+	sendPM(message, helpEmbed);
       } else {
         sendMessage(message, 'Sorry, I don\'t understand that command. I sent you a PM of available commands.');
-        sendPM(message, 'Use `' + prefix + 'rps` to throw a challenge. \n' +
-          'Use `' + prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
-          'Finally, `' + prefix + 'help` will show you this message.');
+        sendPM(message, helpEmbed);
       }
     }
   }
