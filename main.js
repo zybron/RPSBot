@@ -23,7 +23,21 @@ if (process.env.TOKEN) {
 }
 
 var inviteLink = '';
-var donateLink = 'If you are enjoying RPSBot and would like to show your support you may donate here: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8HT56HRQQZ27N&source=url'
+var donateLink = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8HT56HRQQZ27N&source=url'
+var helpEmbed = {
+  "embed": {
+    "description": "Use `!rps` to throw a challenge. \n" + 
+	  "Use `!rps static` to throw a challenge against me and I will show you the results. \n" +
+	  "Use `!help` to show this message.\n\n[Invite](<<inviteLink>>) RPSBot to your own server.\n\n" + 
+	  "[Donate](" + donateLink + ") to support RPSBot.",
+    "url": "https://github.com/zybron/RPSBot",
+    "author": {
+      "name": "RPSBot",
+      "url": "https://github.com/zybron/RPSBot",
+      "icon_url": "https://cdn.discordapp.com/avatars/537420362921803787/30e4c0df91512798b98c7a888c9df60c.png"
+    }
+  }
+};
 
 // The ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted
@@ -47,6 +61,7 @@ client.on('ready', () => {
 	.then(link => {
 		logMessage(`Generated bot invite link: ${link}`);
 		inviteLink = link;
+	  	helpEmbed.embed.description = helpEmbed.embed.description.replace("<<inviteLink>>",inviteLink);
   });
   client.user.setActivity(`on ${client.guilds.size} servers`);
 });
@@ -115,8 +130,13 @@ client.on('message', message => {
     } else {
       sendMessage(message, 'you threw ' + resp + '! ' + gene);
     }
-    
-
+  } else if (message.content.toLocalLowerCase() === prefix + 'test' ||
+    (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'test')) {
+    if (message.channel.type === 'dm') {
+      sendPM(message, helpEmbed);
+    } else {
+      sendMessage(message, helpEmbed);
+    }
   } else {
     if (message.author.username !== 'RPSBot') { // don't try to respond to myself
       if (message.channel.type === "dm") {
