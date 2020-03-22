@@ -23,7 +23,7 @@ if (process.env.TOKEN) {
 }
 
 var inviteLink = '';
-var donateLink = '[If you are enjoying RPSBot and would like to show your support you may donate here.](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8HT56HRQQZ27N&source=url)'
+var donateLink = 'If you are enjoying RPSBot and would like to show your support you may donate here: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8HT56HRQQZ27N&source=url'
 
 // The ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted
