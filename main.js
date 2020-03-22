@@ -23,6 +23,7 @@ if (process.env.TOKEN) {
 }
 
 var inviteLink = '';
+var donateLink = '[If you are enjoying RPSBot and would like to show your support you may donate here.](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8HT56HRQQZ27N&source=url)'
 
 // The ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted
@@ -62,7 +63,7 @@ client.on('message', message => {
     sendPM(message, 'Use `' + prefix + 'rps` to throw a challenge. \n' +
       'Use `' + prefix + 'rps static` to throw a challenge against me and I will show you the results. \n' +
       'Finally, `' + prefix + 'help` will show you this message.\n' + 
-      'If you would like to invite me to your server, use this link: ' + inviteLink);
+      'If you would like to invite me to your server, use this link: ' + inviteLink + '\n' + donateLink);
 
   } else if (message.content.toLocaleLowerCase() === prefix + 'rps static' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'rps static')) {
