@@ -130,7 +130,7 @@ client.on('message', message => {
     } else {
       sendMessage(message, 'you threw ' + resp + '! ' + gene);
     }
-  } else if (message.content.toLocalLowerCase() === prefix + 'test' ||
+  } else if (message.content.toLocaleLowerCase() === prefix + 'test' ||
     (message.channel.type === 'dm' && message.content.toLocaleLowerCase() === 'test')) {
     if (message.channel.type === 'dm') {
       sendPM(message, helpEmbed);
