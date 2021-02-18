@@ -285,9 +285,6 @@ async function saveSettings(settings) {
   if (!pool) {
     return null;
   } else {
-    logMessage(settings);
-    logMessage('Guild ID: ' + settings.guild_id);
-    logMessage('Prefix: ' + settings.prefix);
     if (!settings.guild_id || !settings.prefix) {
       return null;
     } else {
