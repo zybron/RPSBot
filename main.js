@@ -105,7 +105,6 @@ client.on('message', async message => {
   if (message.channel.type !== 'dm') {
     const settings = await getSettings(message.guild.id);
     if (settings) {
-      logMessage('Settings: ' + JSON.stringify(settings));
       prefix = settings.prefix;
       if (settings.help_in_pm !== null) {
         help_in_pm = settings.help_in_pm;
@@ -323,7 +322,6 @@ async function getSettings(guild_id) {
     } else {
       try {
         const res = await pool.query('select * from public.server_settings where guild_id = $1', [guild_id]);
-        logMessage(JSON.stringify(res.rows[0]));
         return res.rows[0];
       } catch (err) {
         console.log(err.stack);
@@ -348,13 +346,10 @@ async function saveSettings(settings) {
         var insert_params = [settings.prefix || '!', help_in_pm, settings.guild_id];
         const res = await pool.query('select * from public.server_settings where guild_id = $1', select_params);
         if (res.rows[0]) {
-          logMessage('Update from ' + JSON.stringify(res.rows[0]));
           query_text = 'update public.server_settings set prefix=$1, help_in_pm=$2 where guild_id=$3'
         } else {
           query_text = 'insert into public.server_settings(prefix, help_in_pm, guild_id) VALUES ($1, $2, $3)'
         }
-        logMessage(query_text);
-        logMessage(insert_params);
         const update = await pool.query(query_text, insert_params);
         return update;
 
