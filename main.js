@@ -113,7 +113,7 @@ client.on('message', async message => {
     } else {
       // We're seeing messages but there are no settings for this guild id. so save if guild id is defined
       if (message.guild.id) {
-        await saveSettings({ guild_id: message.guild.id, prefix: '!', help_in_pm: 1 });
+        await createSettings(message.guild.id);
       }
     }
   }
@@ -196,7 +196,7 @@ client.on('message', async message => {
       sendMessage(message, 'The prefix must be at least one character in length. Please include the new prefix after the command `' + prefix + 'prefix`. For example, `' + prefix + 'prefix #`');
       return;
     }
-    const saved = await saveSettings({ guild_id: message.guild.id, prefix: new_prefix });
+    const saved = await savePrefix(message.guild.id, new_prefix );
     if (saved) {
       prefix = new_prefix;
       sendMessage(message, 'Prefix was successfully updated to ' + prefix);
@@ -224,7 +224,7 @@ client.on('message', async message => {
       sendMessage(message, "The helpinpm command only accepts either on or off as an argument.");
       return;
     }
-    const saved = await saveSettings({ guild_id: message.guild.id, help_in_pm: toggle === 'on' ? 1 : 0 });
+    const saved = await saveHelp(message.guild.id, toggle === 'on' ? 1 : 0 );
     if (saved) {
       sendMessage(message, 'Help in PM was successfully updated to ' + toggle);
     } else {
@@ -268,7 +268,7 @@ client.on("guildCreate", guild => {
   // This event triggers when the bot joins a guild.
   logMessage(`New server joined: ${guild.name} (id: ${guild.id}). This server has ${guild.memberCount} members!`);
   client.user.setActivity(`on ${client.guilds.size} servers`);
-  saveSettings({ guild_id: guild.id, prefix: '!', help_in_pm: 1 });
+  createSettings(guild.id);
 });
 
 client.on("guildDelete", guild => {
@@ -316,6 +316,24 @@ function dateString() {
   return '[' + d + ' ' + t + '] ';
 };
 
+async function createSettings(guild_id) {
+  if (!pool) {
+    return null;
+  } else {
+    if (!guild_id) {
+      return null;
+    } else {
+      try {
+        const res = await pool.query('insert into public.server_settings (guild_id, prefix, help_in_pm) VALUES ($1, $2, $3)', [guild_id, '!', 1]);
+        return res.rows[0];
+      } catch (err) {
+        console.log(err.stack);
+        return null;
+      }
+    }
+  }
+}
+
 async function getSettings(guild_id) {
   if (!pool) {
     return null;
@@ -334,35 +352,29 @@ async function getSettings(guild_id) {
   }
 }
 
-async function saveSettings(settings) {
-  if (!pool) {
+async function savePrefix(guild_id, prefix) {
+  var params = [prefix, guild_id];
+  var querytext = "update public.server_settings set prefix=$1 where guild_id=$2";
+  try {
+    const update = await pool.query(querytext, params);
+    return update;
+  } catch (error) {
+    logMessage(error.stack);
     return null;
-  } else {
-    if (!settings.guild_id) {
-      return null;
-    } else {
-
-      try {
-        var query_text = '';
-        var select_params = [settings.guild_id];
-        var help_in_pm = settings.help_in_pm === 0 ? 0 : 1;
-        var insert_params = [settings.prefix || '!', help_in_pm, settings.guild_id];
-        const res = await pool.query('select * from public.server_settings where guild_id = $1', select_params);
-        if (res.rows[0]) {
-          query_text = 'update public.server_settings set prefix=$1, help_in_pm=$2 where guild_id=$3'
-        } else {
-          query_text = 'insert into public.server_settings(prefix, help_in_pm, guild_id) VALUES ($1, $2, $3)'
-        }
-        const update = await pool.query(query_text, insert_params);
-        return update;
-
-      } catch (err) {
-        logMessage(err.stack);
-        return null;
-      }
-    }
   }
-}
+};
+
+async function saveHelp(guild_id, help_in_pm) {
+  var params = [help_in_pm, guild_id];
+  var querytext = "update public.server_settings set help_in_pm=$1 where guild_id=$2";
+  try {
+    const update = await pool.query(querytext, params);
+    return update;
+  } catch (error) {
+    logMessage(error.stack);
+    return null;
+  }
+};
 
 async function deleteSettings(guild_id) {
   if (!pool) {
