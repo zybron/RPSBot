@@ -91,7 +91,7 @@ client.on('ready', () => {
     .then(link => {
       logMessage(`Generated bot invite link: ${link}`);
       inviteLink = link;
-      helpEmbed.embed.description = helpEmbed.embed.description.replace("<<inviteLink>>", inviteLink);
+      updateHelpMessage();
     });
   client.user.setActivity(`on ${client.guilds.size} servers`);
 });
@@ -416,4 +416,5 @@ function updateHelpMessage() {
       }
     }
   };
+  helpEmbed.embed.description = helpEmbed.embed.description.replace("<<inviteLink>>", inviteLink);
 }
