@@ -185,7 +185,7 @@ client.on('message', async message => {
       sendMessage(message, helpEmbed);
     }
   } else if (message.channel.type !== 'dm' && message.content.toLocaleLowerCase().startsWith(prefix + 'prefix')) {
-    if (!message.member || !message.member.hasPermission(['ADMINISTRATOR', 'MANAGE_GUILD'])) {
+    if (message.member && !message.member.hasPermission(['ADMINISTRATOR', 'MANAGE_GUILD'])) {
       // doesn't have permission to change the prefix
       sendPM(message, 'You do not have permission to change the bot prefix for RPSBot.');
       return;
@@ -207,7 +207,8 @@ client.on('message', async message => {
       message.content.startsWith('prefix'))) {
     sendPM(message, 'The bot prefix cannot be updated via PM. Please issue this command in a channel the bot has permission to read.');
   } else if (message.channel.type !== 'dm' && message.content.toLocaleLowerCase().startsWith(prefix + 'helpinpm')) {
-    if (!message.member || !message.member.hasPermission(['ADMINISTRATOR', 'MANAGE_GUILD'])) {
+    
+    if (message.member && !message.member.hasPermission(['ADMINISTRATOR', 'MANAGE_GUILD'])) {
       // doesn't have permission to change the prefix
       sendPM(message, 'You do not have permission to change the Help in PM setting for RPSBot.');
       return;
