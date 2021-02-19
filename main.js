@@ -109,6 +109,7 @@ client.on('message', async message => {
       if (settings.help_in_pm !== null) {
         help_in_pm = settings.help_in_pm;
       }
+      updateHelpMessage();
     } else {
       // We're seeing messages but there are no settings for this guild id. so save if guild id is defined
       if (message.guild.id) {
@@ -199,6 +200,7 @@ client.on('message', async message => {
     if (saved) {
       prefix = new_prefix;
       sendMessage(message, 'Prefix was successfully updated to ' + prefix);
+      updateHelpMessage();
     } else {
       sendMessage(message, 'There was an issue connecting to the database. The prefix has not been changed.');
     }
@@ -379,4 +381,27 @@ async function deleteSettings(guild_id) {
       }
     }
   }
+}
+
+function updateHelpMessage() {
+  helpEmbed = {
+    "embed": {
+      "description": "**Commands available to all users:** \n" +
+        "Use `" + prefix + "rps` to throw a challenge. \n" +
+        "Use `" + prefix + "rps static` to throw a challenge against me and I will show you the results. \n" +
+        "Use `" + prefix + "help` to show this message.\n\n" +
+        "**Commands only available to Members/Roles with the Manage Server permission:** \n" +
+        "Use `" + prefix + "prefix` followed by the new prefix character(s) to change the prefix. \n" +
+        "Use `" + prefix + "helpinpm on` to have all help messages sent via PM. \n" +
+        "Use `" + prefix + "helpinpm off` to have all help messages display in the channel they were issued. \n\n" +
+        "[Invite](<<inviteLink>>) RPSBot to your own server.\n\n" +
+        "[Donate](" + donateLink + ") to support RPSBot.",
+      "url": "https://github.com/zybron/RPSBot",
+      "author": {
+        "name": "RPSBot",
+        "url": "https://github.com/zybron/RPSBot",
+        "icon_url": "https://cdn.discordapp.com/avatars/537420362921803787/30e4c0df91512798b98c7a888c9df60c.png"
+      }
+    }
+  };
 }
