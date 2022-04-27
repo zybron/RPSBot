@@ -1,5 +1,6 @@
 {
-  "token": "",
-  "prefix": "!",
-  "database_url": ""
+  "token": "token goes here",
+  "database_url": "http://example.com",
+  "guildId": "123456789",
+  "clientId": "123456789"
 }
