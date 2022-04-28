@@ -63,7 +63,7 @@ client.once('ready', () => {
     return 1;
   }).map(g => g.name).join("\n" + dateString());
   logMessage(guildNames);
-  client.user.setActivity('use `/help` for commands');
+  client.user.setActivity('use /help for commands', { type: 'CUSTOM' });
 });
 
 
