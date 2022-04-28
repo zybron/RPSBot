@@ -14,7 +14,7 @@ module.exports = {
         if (interaction.inGuild()) {
             logMessage(`/rps output = ${interaction.member.nickname} threw ${randomThrow} on ${interaction.guild.name} in channel ${interaction.channel.name}.`);
         } else {
-            logMessage(`/rps output = ${interaction.member.nickname} threw ${randomThrow} in a direct message.`);
+            logMessage(`/rps output = ${interaction.user.name} threw ${randomThrow} in a direct message.`);
         }
         
 		await interaction.reply(`${interaction.user} threw ${randomThrow}! ${emoji}`);
