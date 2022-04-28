@@ -40,7 +40,11 @@ module.exports = {
 				message = message + 'You won!';
 			}
 		}
-		logMessage(`/static initiated by ${interaction.member.nickname} on ${interaction.guild.name} in channel ${interaction.channel.name}.`);
+		if (interaction.isGuild()) {
+            logMessage(`/rps initiated by ${interaction.member.nickname} on ${interaction.guild.name} in channel ${interaction.channel.name}.`);
+        } else {
+            logMessage(`/rps initiated by ${interaction.member.nickname} in a direct message.`);
+        }
 		logMessage(`/static output = ${message}`);
 		await interaction.reply(message);
 	},
