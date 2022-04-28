@@ -11,7 +11,12 @@ module.exports = {
         const emojis = ['\:scissors:', '\:rock:', '\:newspaper:'];
         const randomThrow  = options[Math.floor(Math.random() * options.length)];
         const emoji = emojis[options.indexOf(randomThrow)];
-        logMessage(`/rps output = ${interaction.member.nickname} threw ${randomThrow} on ${interaction.guild.name} in channel ${interaction.channel.name}.`);
+        if (interaction.isGuild()) {
+            logMessage(`/rps output = ${interaction.member.nickname} threw ${randomThrow} on ${interaction.guild.name} in channel ${interaction.channel.name}.`);
+        } else {
+            logMessage(`/rps output = ${interaction.member.nickname} threw ${randomThrow} in a direct message.`);
+        }
+        
 		await interaction.reply(`${interaction.user} threw ${randomThrow}! ${emoji}`);
 	},
 };
