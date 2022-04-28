@@ -18,7 +18,7 @@ module.exports = {
 
 
 function updateHelpMessage(inviteLink) {
-    const donateLink = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8HT56HRQQZ27N&source=url';
+    const donateLink = 'https://paypal.me/RPSBot';
     let helpEmbed = new MessageEmbed()
 	.setTitle('RPS Bot')
 	.setURL('https://github.com/zybron/RPSBot')
