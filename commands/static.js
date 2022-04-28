@@ -40,7 +40,7 @@ module.exports = {
 				message = message + 'You won!';
 			}
 		}
-		if (interaction.isGuild()) {
+		if (interaction.inGuild()) {
             logMessage(`/rps initiated by ${interaction.member.nickname} on ${interaction.guild.name} in channel ${interaction.channel.name}.`);
         } else {
             logMessage(`/rps initiated by ${interaction.member.nickname} in a direct message.`);
