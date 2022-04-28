@@ -43,7 +43,7 @@ module.exports = {
 		if (interaction.inGuild()) {
             logMessage(`/rps initiated by ${interaction.member.nickname} on ${interaction.guild.name} in channel ${interaction.channel.name}.`);
         } else {
-            logMessage(`/rps initiated by ${interaction.user.name} in a direct message.`);
+            logMessage(`/rps initiated by ${interaction.user.username} in a direct message.`);
         }
 		logMessage(`/static output = ${message}`);
 		await interaction.reply(message);
