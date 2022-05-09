@@ -10,7 +10,8 @@ module.exports = {
             Permissions.FLAGS.SEND_MESSAGES,
             Permissions.FLAGS.MANAGE_MESSAGES,
             Permissions.FLAGS.EMBED_LINKS,
-            Permissions.FLAGS.MENTION_EVERYONE] });
+            Permissions.FLAGS.MENTION_EVERYONE],
+            scopes: ['bot', 'applications.commands'] });
         const helpMessage = updateHelpMessage(inviteLink);
 		await interaction.reply({ embeds:[helpMessage], ephemeral:true });
 	},

@@ -98,14 +98,12 @@ client.on("error", function (error) {
 client.on("guildCreate", guild => {
   // This event triggers when the bot joins a guild.
   logMessage(`New server joined: ${guild.name} (id: ${guild.id}). This server has ${guild.memberCount} members!`);
-  client.user.setActivity(`on ${client.guilds.size} servers`);
   createSettings(guild.id);
 });
 
 client.on("guildDelete", guild => {
   // this event triggers when the bot is removed from a guild.
   logMessage(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-  client.user.setActivity(`on ${client.guilds.size} servers`);
   deleteSettings(guild.id);
 });
 
