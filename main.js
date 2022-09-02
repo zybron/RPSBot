@@ -6,29 +6,6 @@ const { compare } = require('libsodium-wrappers');
 const { join } = require('node:path');
 const { logMessage, dateString } = require('./utils.js');
 
-// connect to database
-let pool = {};
-if (process.env.DATABASE_URL) {
-  pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
-    }
-  });
-} else if (config.database_url !== '') {
-  pool = new Pool({
-    connectionString: config.database_url,
-    ssl: {
-      rejectUnauthorized: false
-    }
-  });
-} else {
-  logMessage('Unable to connect to database. DATABASE_URL environment variable not available.');
-  process.exit(1);
-}
-
-
-
 // Create an instance of a Discord client
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 client.commands = new Collection();
@@ -133,82 +110,4 @@ function sendPM(message, text) {
     .catch(error => console.error(dateString() + error));
 };
 
-async function createSettings(guild_id) {
-  if (!pool) {
-    return null;
-  } else {
-    if (!guild_id) {
-      return null;
-    } else {
-      try {
-        const res = await pool.query('insert into public.server_settings (guild_id, prefix, help_in_pm) VALUES ($1, $2, $3)', [guild_id, '!', 1]);
-        return res.rows[0];
-      } catch (err) {
-        console.log(err.stack);
-        return null;
-      }
-    }
-  }
-}
-
-async function getSettings(guild_id) {
-  if (!pool) {
-    return null;
-  } else {
-    if (!guild_id) {
-      return null;
-    } else {
-      try {
-        const res = await pool.query('select * from public.server_settings where guild_id = $1', [guild_id]);
-        return res.rows[0];
-      } catch (err) {
-        console.log(err.stack);
-        return null;
-      }
-    }
-  }
-}
-
-async function savePrefix(guild_id, prefix) {
-  var params = [prefix, guild_id];
-  var querytext = "update public.server_settings set prefix=$1 where guild_id=$2";
-  try {
-    const update = await pool.query(querytext, params);
-    return update;
-  } catch (error) {
-    logMessage(error.stack);
-    return null;
-  }
-};
-
-async function saveHelp(guild_id, help_in_pm) {
-  var params = [help_in_pm, guild_id];
-  var querytext = "update public.server_settings set help_in_pm=$1 where guild_id=$2";
-  try {
-    const update = await pool.query(querytext, params);
-    return update;
-  } catch (error) {
-    logMessage(error.stack);
-    return null;
-  }
-};
-
-async function deleteSettings(guild_id) {
-  if (!pool) {
-    return false;
-  } else {
-    if (!guild_id) {
-      return false;
-    } else {
-
-      try {
-        const res = await pool.query('delete from public.server_settings where guild_id = $1', [guild_id]);
-        return true;
-      } catch (err) {
-        console.log(err.stack);
-        return false;
-      }
-    }
-  }
-}
 
