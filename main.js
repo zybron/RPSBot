@@ -1,5 +1,5 @@
 const fs = require('node:fs');
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const { Pool } = require('pg');
 const config = require("./config.json");
 const { compare } = require('libsodium-wrappers');
@@ -7,7 +7,7 @@ const { join } = require('node:path');
 const { logMessage, dateString } = require('./utils.js');
 
 // Create an instance of a Discord client
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -75,13 +75,13 @@ client.on("error", function (error) {
 client.on("guildCreate", guild => {
   // This event triggers when the bot joins a guild.
   logMessage(`New server joined: ${guild.name} (id: ${guild.id}). This server has ${guild.memberCount} members!`);
-  createSettings(guild.id);
+  // createSettings(guild.id);
 });
 
 client.on("guildDelete", guild => {
   // this event triggers when the bot is removed from a guild.
   logMessage(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-  deleteSettings(guild.id);
+  // deleteSettings(guild.id);
 });
 
 // Log our bot in
@@ -109,5 +109,4 @@ function sendPM(message, text) {
       ((message.channel && message.channel.name) ? message.channel.name : 'No Channel') + '): sent ' + text + ' to ' + message.author.username))
     .catch(error => console.error(dateString() + error));
 };
-
 
