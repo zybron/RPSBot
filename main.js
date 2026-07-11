@@ -1,10 +1,13 @@
 const fs = require('node:fs');
 const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
-const { Pool } = require('pg');
-const config = require("./config.json");
-const { compare } = require('libsodium-wrappers');
-const { join } = require('node:path');
 const { logMessage, dateString } = require('./utils.js');
+
+let config = {};
+try {
+  config = require('./config.json');
+} catch (e) {
+  config = {};
+}
 
 // Create an instance of a Discord client
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -20,12 +23,7 @@ for (const file of commandFiles) {
 }
 
 // Get settings from environment variables or optional config file
-
-if (process.env.TOKEN) {
-  token = process.env.TOKEN;
-} else {
-  token = config.token;
-}
+const token = process.env.TOKEN || config.token;
 
 
 // The ready event is vital, it means that your bot will only start reacting to information

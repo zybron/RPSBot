@@ -1,0 +1,11 @@
+.git
+.github
+.gitignore
+node_modules
+npm-debug.log
+config.json
+config.txt
+.env
+README.md
+LICENSE
+Procfile

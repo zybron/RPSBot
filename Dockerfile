@@ -1,20 +1,15 @@
-FROM node:9.3
+FROM node:22-alpine
 
 LABEL maintainer="zybron <zybron@gmail.com>"
 
-USER root
+WORKDIR /usr/src/app
 
-ENV APP /usr/src/app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --loglevel=warn
 
-RUN npm install pm2 -g
+COPY main.js utils.js ./
+COPY commands ./commands
 
-RUN mkdir -p $APP
-COPY main.js $APP/main.js
-COPY config.json $APP/data/config.json
-COPY package.json $APP/package.json
+USER node
 
-RUN npm install --loglevel=warn
-
-WORKDIR $APP
-
-CMD [ "pm2-runtime", "main.js" ]
+CMD [ "node", "main.js" ]
